@@ -121,12 +121,36 @@ var button = "<li>" +
                 "<button class='btn btn-secondary btn-block js-button js-wrong-button'>button option</button>" +
               "</li>"
             
+var resultsNode =  
+    "<div>" +
+      "<div class='row'>" +
+        "<div class='col-md-12 text-center '>" +
+          "<h1 class='display-2'>Test Scores</h1>" +
+          "<h3 class='results-message text-center'>Congratulations you scored 80%</h3>" +
+          "<div class='row'>" +
+            "<div class='col-md-8 offset-md-2 text-center'>" +
+              "<ul =''>" +
+                "<h4>The questions you missed:</h4>" +
+                
+              "</ul>" +
+            "</div>" +
+          "</div>" +
+
+        "</div>" +
+        "" +
+      "</div>" +
+    "</div>"
+var questionsMissedNode = 
+  "<li>" +
+    "<p class='question-missed'>Question:</p>" +
+    "<p class='missed-answer'>Answer:</p>" + 
+  "</li>"
 // state manipulation
 
 // DOM render functions
 
 function renderCorrectMessage(thisValueSaved) {
-  console.log('renderCorrectMessage')
+  // console.log('renderCorrectMessage')
   var correctMessageHTML = $('<p id="correct-message">Correct Message</p>');
   var correctMessageText = state.questions[state.currentQuestionSet].correctMessage;
   $(thisValueSaved).closest('.question-block').find('.js-correct-info').html(correctMessageHTML);
@@ -134,14 +158,14 @@ function renderCorrectMessage(thisValueSaved) {
 }
 
 function renderWrongMessage(thisValueSaved) {
-  console.log('renderWrongMessage')
+  // console.log('renderWrongMessage')
   var wrongMessageHTML = $('<p id="wrong-message">WrongMessage</p>');
   var wrongMessageText = state.questions[state.currentQuestionSet].wrongMessage
-  console.log(wrongMessageText)
+  // console.log(wrongMessageText)
   $(thisValueSaved).closest('.question-block').find('.js-correct-info').html(wrongMessageHTML);
   // $(this).parent('.js-question-set').removeClass('js-wrong-button')
   $(thisValueSaved).closest('.question-block').find('#wrong-message').text(wrongMessageText)
-  console.log($('.js-button'))
+  // console.log($('.js-button'))
   $('.js-button').removeClass('active')
   $(thisValueSaved).addClass('active')
     
@@ -175,14 +199,43 @@ function renderQuestion(currentQuestionSet) {
   $('.quiz-node').html(div)
 }
 
+function renderTestResults(answeredWrong) {
+  var finalScore = 100 - (state.answeredWrong.length/state.questions.length * 100)
+  // console.log(finalScore)
+  var divScores = $(resultsNode);
+  var scoreMessage = divScores.find('.results-message')
+  if(finalScore >= 60) {
+    scoreMessage.text("Congratulations, you are a real Jazz fan! You scored " + 
+    finalScore + "%!")  
+  }
+  else {
+    scoreMessage.text("You call yourself a Jazz fan?  You probably don't even know who Larry H. Miller is.  You need to start studying your history.  Your quiz score was a measley: " + 
+    finalScore + "%!")
+  }
+  
+  for(var i = 0; i < state.answeredWrong.length; i++) {
+    var questions = state.questions[i].text
+    var answers = state.questions[i].choices[(state.questions[i].correctAnswer)]
+    console.log(questions, answers);
+    var listItem = $(questionsMissedNode)
+    listItem.find('.question-missed').text(questions)
+    listItem.find('.missed-answer').text(answers)
+  }
+
+
+  
+
+  $('.quiz-node').html(divScores)
+}
+
 
 
 // event handlers
 
 function handleCorrectClick() {
-  console.log('hello')
+  // console.log('hello')
   $('.quiz-node').on('click', '.js-correct-button', function() {
-    console.log('click')
+    // console.log('click')
     // console.log($(this))
     // console.log($(this).closest('.question-block'))
     // console.log($('.js-correct-button'))
@@ -200,19 +253,19 @@ function handleWrongClick() {
     // console.log('click')
     var thisValueSaved = $(this)
     renderWrongMessage(thisValueSaved)
-   
+    state.answeredWrong.push(state.currentQuestionSet);
+    console.log(state.answeredWrong);
   })
 }
 
 function handleNextClick() {
 
   $('.quiz-node').on('click', '.next-button', function() {
-    if(state.currentQuestionSet === 9) {
-      alert("This is the last question of the quiz.")
-      return
+    if(state.currentQuestionSet >= 9) {
+      renderTestResults(state.answeredWrong)
     }
     state.currentQuestionSet++;
-    console.log(state.currentQuestionSet);
+    // console.log(state.currentQuestionSet);
     renderQuestion(state.currentQuestionSet);
     // handleNextClick();
   })
@@ -226,7 +279,7 @@ function handleNextClick() {
 
 function handlePreviousClick() {
   $('.quiz-node').on('click', '.prev-button', function() {
-    console.log('prevclick');
+    // console.log('prevclick');
     if(state.currentQuestionSet === 0) {
       alert("You are currently at the first question of the quiz. Good luck!")
       return
@@ -234,7 +287,7 @@ function handlePreviousClick() {
     
     state.currentQuestionSet--;
     renderQuestion(state.currentQuestionSet);
-    console.log(state.currentQuestionSet)
+    // console.log(state.currentQuestionSet)
     // handleNextClick();
   })
 }
