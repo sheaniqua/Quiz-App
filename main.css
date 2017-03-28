@@ -1,3 +1,23 @@
 .btn {
   white-space: normal;
 }
+
+body {
+  background-image: url(http://fsb.zedge.net/scale.php?img=Mi83LzgvNi8xLTk0MjMxNzMtMjc4NjMzMy5qcGc&ctype=1&v=4&q=81&xs=620&ys=0&sig=ee3e036f55635d8615a3193dada0fcad4de8ee2c)
+  /*(http://orig11.deviantart.net/8191/f/2013/231/f/8/malone__stockton_cover_by_r3dtheballer_designs-d6ix1u3.jpg)*/
+  /*(http://media.gettyimages.com/photos/karl-malone-of-the-utah-jazz-goes-for-a-dunk-during-the-nba-game-at-picture-id1729187)*/
+
+}
+h1, h2, h4, #thefirstone, .js-correct-info, .results-message {
+  color: white;
+}
+
+.display-1 {
+  padding-top: 150px;
+}
+
+
+
+.question-missed, .missed-answer {
+  color: gray;
+}

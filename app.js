@@ -40,7 +40,7 @@ var state = {
       correctMessage: "Correct! The home of the Utah Jazz will forever be the Delta Center.", 
       wrongMessage: "Wrong. The home of the Utah Jazz will forever be the Delta Center."},
     {text: "John Stockton is the all time leader in assists and steals.  Which current NBA player has the best chance of reaching and/or surpassing Stockton?", 
-      choices: ["Chris Paul", "John Wall", "Lebron James", "Jason Kidd", "None of the above"], 
+      choices: ["Chris Paul", "John Wall", "Lebron James", "Jason Kidd", "The records will never be broken"], 
       correctAnswer: [4], 
       correctMessage: "Correct! In his 12th season, Chris Paul is the leading active assist leader and 10th in the all-time assist leaderboard. If he stays in the league for 19 years as Stockton did, he’d have to average 13.4 assists over the next 7 years and 2.4 steals.  HIs season highs until this point in his career are 11.6 assists and 2.8 steals.", 
       wrongMessage: "Wrong.  This record will never be broken.  To give you perspective, consider the following facts of CP3. In his 12th season, Chris Paul is the leading active assist leader and 10th in the all-time assist leaderboard. If he stays in the league for 19 years as Stockton did, he’d have to average 13.4 assists over the next 7 years and 2.4 steals.  His season highs until this point in his career are 11.6 assists and 2.8 steals."},
@@ -49,48 +49,17 @@ var state = {
       correctAnswer: [0,1,2,3,], 
       correctMessage: "Correct! This of course is an opinion question.  Here are the opinions of everyone that has taken the quiz:", 
       wrongMessage: "Wrong."},
-    {text: "Did MJ push off.", 
+    {text: "MJ pushed off.", 
       choices: ["True", "False"], 
       correctAnswer: [0], 
-      correctMessage: "Everyone knows he pushed off! The greatest player always found a way to win.", 
-      wrongMessage: "Come on, you know he pushed off!"},
+      correctMessage: "Correct! Everyone knows he pushed off! The greatest player always found a way to win.", 
+      wrongMessage: "Wrong. Come on, you know he pushed off!"},
   ]
 }
 
-// var quizNode = 
-//   "<div>" +
-//       "<div id='thefirstone' class='row'>" +
-//         "<div id='question' class='col-md-12 text-center well'>In which city were the Utah Jazz located before moving to Utah?</div>" +
-//       "</div>" +
-//       "<div class='row'>" +
-//         "<div class='col-md-12 question-block'>" +
-//           "<div class='row'>" +
-//             "<div class='col-md-8 offset-md-2 text-center '>" +
-//               "<ul class='list-unstyled js-question-set'>" +
-                
-//               "</ul>" +
-//             "</div>" +
-//             "<div class='col-md-8 offset-md-2 text-center'>" +
-//               "<div class='js-correct-info'>" +
-//               "</div>" +
-//             "</div>" +
-//             "<div class='col-md-8 offset-md-2 text-center'>" +
-//               "<div>" +
-//                 "<ul class='pagination justify-content-center'>" +
-//                   "<li class='page-item'><a class='page-link' href='index.html'>Previous</a></li>" +
-//                   "<li class='page-item'><a class='page-link' href='question-2.html'>Next</a></li>" +
-//                 "</ul>" +
-//               "</div>" +
-//             "</div>" +
-//           "</div>" +
-//         "</div>" +
-//       "</div>" +
-
-//   "</div>"
-
 var quizNode2 = 
     "<div>" +
-      "<div id='thefirstone' class='row'>" +
+      "<div id='thefirstone' class='row display-4'>" +
         "<div id='question' class='col-md-12 text-center well'>Question</div>" +
       "</div>" +
       "<div class='row'>" +
@@ -102,7 +71,7 @@ var quizNode2 =
               "</ul>" +
             "</div>" +
             "<div class='col-md-8 offset-md-2 text-center'>" +
-              "<div class='js-correct-info'>" +
+              "<div class='js-correct-info text-left'>" +
               "</div>" +
             "</div>" +
             "<div class='col-md-8 offset-md-2 text-center'>" +
@@ -128,9 +97,9 @@ var resultsNode =
           "<h1 class='display-2'>Test Scores</h1>" +
           "<h3 class='results-message text-center'>Congratulations you scored 80%</h3>" +
           "<div class='row'>" +
-            "<div class='col-md-8 offset-md-2 text-center'>" +
-              "<ul =''>" +
-                "<h4>The questions you missed:</h4>" +
+            "<div class='col-md-8 offset-md-2 text-left'>" +
+              "<ul ='pagination'>" +
+                "<h4 class='wrong-list'>The questions you missed:</h4>" +
                 
               "</ul>" +
             "</div>" +
@@ -141,7 +110,7 @@ var resultsNode =
       "</div>" +
     "</div>"
 var questionsMissedNode = 
-  "<li>" +
+  "<li class='list-group-item'>" +
     "<p class='question-missed'>Question:</p>" +
     "<p class='missed-answer'>Answer:</p>" + 
   "</li>"
@@ -209,17 +178,19 @@ function renderTestResults(answeredWrong) {
     finalScore + "%!")  
   }
   else {
-    scoreMessage.text("You call yourself a Jazz fan?  You probably don't even know who Larry H. Miller is.  You need to start studying your history.  Your quiz score was a measley: " + 
+    scoreMessage.text("You call yourself a Jazz fan?  You probably don't even know who Larry H. Miller is.  You need to start studying your history.  Your quiz score was a measley " + 
     finalScore + "%!")
   }
   
   for(var i = 0; i < state.answeredWrong.length; i++) {
-    var questions = state.questions[i].text
-    var answers = state.questions[i].choices[(state.questions[i].correctAnswer)]
+    var questions = state.questions[state.answeredWrong[i]].text
+    var answers = state.questions[state.answeredWrong[i]].choices[state.questions[state.answeredWrong[i]].correctAnswer];
     console.log(questions, answers);
     var listItem = $(questionsMissedNode)
-    listItem.find('.question-missed').text(questions)
-    listItem.find('.missed-answer').text(answers)
+    listItem.find('.question-missed').text("Question: " + questions)
+    listItem.find('.missed-answer').text("Answer: " + answers)
+    
+    divScores.find('.wrong-list').append(listItem)
   }
 
 
